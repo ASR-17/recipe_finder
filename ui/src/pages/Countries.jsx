@@ -46,10 +46,10 @@ const Countries = () => {
 
         if (!selectedCountry) {
           // 🌍 No country selected → Get Random Dishes
-          url = `${BASE_URL}/countries/random`;   // ✅ FIXED
+          url = `${BASE_URL}/api/countries/random`;   // ✅ FIXED
         } else {
           // 🎯 Fetch by Country + Category
-          url = `${BASE_URL}/countries/dishes?country=${selectedCountry}&category=${selectedCategory}`;  // ✅ FIXED
+          url = `${BASE_URL}/api/countries/dishes?country=${selectedCountry}&category=${selectedCategory}`;  // ✅ FIXED
         }
 
         const res = await axios.get(url, { headers });

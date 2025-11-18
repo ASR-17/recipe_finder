@@ -39,7 +39,7 @@ const Guide = () => {
   useEffect(() => {
     const fetchGuide = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/meals/${id}`, {
+        const res = await axios.get(`${BASE_URL}/api/meals/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -76,7 +76,7 @@ const Guide = () => {
       try {
         setTranslating(true);
         const res = await axios.post(
-          `${BASE_URL}/translate/translate`,
+          `${BASE_URL}/api/translate/translate`,
           {
             text: current.en,
             target: language,
@@ -108,7 +108,7 @@ const Guide = () => {
       try {
         setLoadingTip(true);
         const res = await axios.post(
-          `${BASE_URL}/translate/tip`,
+          `${BASE_URL}/api/translate/tip`,
           {
             text: stepText,
             language,
@@ -140,7 +140,7 @@ const Guide = () => {
 
       try {
         const res = await axios.post(
-          `${BASE_URL}/timer/analyze-step`,
+          `${BASE_URL}/api/timer/analyze-step`,
           { stepText, language },
           {
             headers: {

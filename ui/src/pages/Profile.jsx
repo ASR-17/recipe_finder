@@ -46,7 +46,7 @@ export default function Profile() {
     formData.append("profilePic", file);
 
     try {
-      const res = await axios.patch(`${BASE_URL}/user/profile-pic`, formData, {
+      const res = await axios.patch(`${BASE_URL}/api/user/profile-pic`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,

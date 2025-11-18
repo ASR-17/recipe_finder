@@ -37,7 +37,7 @@ const IngredientsPage = () => {
 
     try {
       const res = await axios.post(
-        `${BASE_URL}/ingredients/search`,
+        `${BASE_URL}/api/ingredients/search`,
         data,
         { headers }
       );
