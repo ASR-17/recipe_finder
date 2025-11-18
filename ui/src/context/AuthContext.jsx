@@ -1,13 +1,12 @@
 /* src/context/AuthContext.jsx */
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import API from "../utils/api"; // Your axios instance (uses VITE_BACKEND_URL internally)
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
-const API_URL = "http://localhost:5000/api/auth";
-
 export const AuthProvider = ({ children }) => {
+  // Load from localStorage
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
@@ -16,12 +15,12 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem("token") || null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Keep localStorage synced when user changes
+  // Keep user in localStorage
   useEffect(() => {
     if (user) localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
-  // ✅ If token removed → logout user
+  // If token removed → logout
   useEffect(() => {
     if (!token) {
       setUser(null);
@@ -29,13 +28,11 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  // 🧠 Sync updated profile from backend (especially for profilePic)
-  const refreshUserProfile = async () => {  // 🆕
+  // Fetch updated profile (e.g., after user uploads image)
+  const refreshUserProfile = async () => {
     if (!token) return;
     try {
-      const res = await axios.get("http://localhost:5000/api/user/profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await API.get("/user/profile"); // Uses env URL
       if (res.data) {
         setUser(res.data);
         localStorage.setItem("user", JSON.stringify(res.data));
@@ -45,11 +42,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Signup
+  // -------------------------
+  // SIGNUP
+  // -------------------------
   const signup = async (name, username, email, password) => {
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/signup`, { name, username, email, password });
+      await API.post("/auth/signup", {
+        name,
+        username,
+        email,
+        password,
+      });
     } catch (err) {
       throw new Error(err.response?.data?.message || "Signup failed");
     } finally {
@@ -57,18 +61,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Login
+  // -------------------------
+  // LOGIN
+  // -------------------------
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${API_URL}/login`, { email, password });
+      const res = await API.post("/auth/login", { email, password });
 
-      // 🆕 backend should now return { token, user: { ... , profilePic } }
       const { token, user } = res.data;
 
+      // Save to localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
+      // Update state
       setToken(token);
       setUser(user);
 
@@ -80,7 +87,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout
+  // -------------------------
+  // LOGOUT
+  // -------------------------
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -92,13 +101,12 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        setUser,
         token,
-        login,
         signup,
+        login,
         logout,
         loading,
-        refreshUserProfile, // 🆕 expose function so you can re-sync after profile upload
+        refreshUserProfile,
       }}
     >
       {children}
