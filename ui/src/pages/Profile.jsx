@@ -68,7 +68,7 @@ export default function Profile() {
     return <div className="text-white text-center text-3xl mt-20">Loading Profile...</div>;
 
   return (
-    <div className="min-h-screen p-10 text-white relative">
+    <div className="min-h-screen p-10 text-white relative bg-black/30 backdrop-blur-sm">
 
       {/* Back Button */}
       <button
