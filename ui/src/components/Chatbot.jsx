@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import API from "../../utils/api";   // ✅ use global API
+import API from "../utils/api";   // ✅ use global API
 import {
   FaMicrophone,
   FaMicrophoneSlash,
