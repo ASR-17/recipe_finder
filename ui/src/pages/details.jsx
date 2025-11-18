@@ -5,6 +5,8 @@ import { useAuth } from "../context/AuthContext";
 
 import emptyHeart from "../assets/thumb-empty.svg";
 import filledHeart from "../assets/thumb-filled.svg";
+import { BASE_URL } from "../utils/api";
+
 
 import confetti from "canvas-confetti";
 
@@ -45,7 +47,7 @@ const Details = () => {
       try {
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const res = await axios.get(`http://localhost:5000/api/meals/${id}`, { headers });
+        const res = await axios.get(`${BASE_URL}/meals/${id}`, { headers });
         setDish(res.data);
         setError(null);
       } catch (err) {
@@ -75,14 +77,14 @@ const Details = () => {
     try {
       if (isLikedNow) {
         // UNLIKE
-        await axios.delete(`http://localhost:5000/api/likes/like/${mealId}`, {
+        await axios.delete(`${BASE_URL}/likes/like/${mealId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser({ ...user, likedRecipes: likedList.filter((x) => x !== mealId) });
       } else {
         // LIKE
         await axios.post(
-          `http://localhost:5000/api/likes/like/${mealId}`,
+          `${BASE_URL}/likes/like/${mealId}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -123,7 +125,7 @@ const Details = () => {
       }
 
       await axios.post(
-        "http://localhost:5000/api/ratings",
+        `${BASE_URL}/ratings`,
         { mealId: id, rating: value },
         { headers: { Authorization: `Bearer ${token}` } }
       );

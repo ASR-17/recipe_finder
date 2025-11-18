@@ -5,6 +5,9 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Search, Bot, Star, MapPin } from "lucide-react";
+import API from "../utils/api";
+import { BASE_URL } from "../utils/api";
+
 
 const Card = () => {
   const { category } = useParams();
@@ -22,8 +25,8 @@ const Card = () => {
     const fetchMeals = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/meals/category/${category}`,
+        const res = await API.get(
+          `/meals/category/${category}`,
           { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
         );
         const rawMeals = res.data.meals || [];
@@ -173,10 +176,11 @@ const Card = () => {
               >
                 {user.profilePic ? (
                   <img
-                    src={`http://localhost:5000${user.profilePic}`}
-                    alt="Profile"
-                    className="w-full h-full object-cover rounded-full"
-                  />
+                  src={`${BASE_URL}${user.profilePic}`}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-full"
+                />
+
                 ) : (
                   <span className="text-lg">👤</span>
                 )}

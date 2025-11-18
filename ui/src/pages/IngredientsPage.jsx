@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import IngredientSearch from "../components/Ingredients/IngredientSearch";
 import DishResultCard from "../components/Ingredients/DishResultCard";
+import { BASE_URL } from "../utils/api";
+
 
 const IngredientsPage = () => {
   const [results, setResults] = useState([]);
@@ -35,7 +37,7 @@ const IngredientsPage = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/ingredients/search",
+        `${BASE_URL}/ingredients/search`,
         data,
         { headers }
       );

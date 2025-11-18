@@ -3,6 +3,8 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Pencil } from "lucide-react"; // 🆕 for edit icon
+import { BASE_URL } from "../utils/api";
+
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -18,7 +20,7 @@ export default function Profile() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get("http://localhost:5000/api/likes/liked", {
+        const res = await axios.get(`${BASE_URL}/likes/liked`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -44,7 +46,7 @@ export default function Profile() {
     formData.append("profilePic", file);
 
     try {
-      const res = await axios.patch("http://localhost:5000/api/user/profile-pic", formData, {
+      const res = await axios.patch(`${BASE_URL}/user/profile-pic`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -83,7 +85,7 @@ export default function Profile() {
       {/* Profile Image or Default Icon */}
       {user.profilePic ? (
         <img
-          src={`http://localhost:5000${user.profilePic}`}
+          src={`${BASE_URL}${user.profilePic}`}
           alt="Profile"
           className="w-full h-full object-cover rounded-full"
         />

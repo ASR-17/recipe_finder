@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import API from "../../utils/api";
+import API, { SOCKET_URL } from "../../utils/api";
 
 const CommentItem = ({ comment, recipeId }) => {
   const [showReply, setShowReply] = useState(false);
@@ -8,7 +8,9 @@ const CommentItem = ({ comment, recipeId }) => {
   const sendReply = async () => {
     if (!reply.trim()) return;
     try {
-      const res = await API.post(`/community/comments/reply/${comment._id}`, { text: reply });
+      const res = await API.post(`/community/comments/reply/${comment._id}`, {
+        text: reply,
+      });
       comment.replies = [res.data, ...(comment.replies || [])];
       setReply("");
       setShowReply(false);
@@ -30,7 +32,7 @@ const CommentItem = ({ comment, recipeId }) => {
       <div className="flex items-start gap-2">
         {/* Profile Picture */}
         <img
-          src={`http://localhost:5000${userImage}`}
+          src={`${SOCKET_URL}${userImage}`}
           alt="User"
           className="w-8 h-8 rounded-full object-cover border border-gray-200"
         />
@@ -41,7 +43,9 @@ const CommentItem = ({ comment, recipeId }) => {
             <p className="text-xs font-semibold text-gray-900 leading-tight">
               {comment.user?.name || "Anonymous"}
             </p>
-            <p className="text-[13px] text-gray-700 leading-snug">{comment.text}</p>
+            <p className="text-[13px] text-gray-700 leading-snug">
+              {comment.text}
+            </p>
           </div>
 
           {/* Reply Button */}
@@ -83,7 +87,7 @@ const CommentItem = ({ comment, recipeId }) => {
                 return (
                   <div key={r._id} className="flex items-start gap-2">
                     <img
-                      src={`http://localhost:5000${replyImage}`}
+                      src={`${SOCKET_URL}${replyImage}`}
                       alt="Reply User"
                       className="w-7 h-7 rounded-full object-cover border border-gray-200"
                     />
@@ -92,7 +96,9 @@ const CommentItem = ({ comment, recipeId }) => {
                         <p className="text-xs font-semibold text-gray-800 leading-tight">
                           {r.user?.name || "Anonymous"}
                         </p>
-                        <p className="text-[13px] text-gray-700 leading-snug">{r.text}</p>
+                        <p className="text-[13px] text-gray-700 leading-snug">
+                          {r.text}
+                        </p>
                       </div>
                     </div>
                   </div>

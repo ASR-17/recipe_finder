@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { SOCKET_URL } from "../utils/api";   // ✅ added
 
 const categories = [
   { name: "Veg", path: "vegetarian" },
@@ -75,7 +76,7 @@ const Navbar = () => {
               >
                 {user.profilePic ? (
                   <img
-                    src={`http://localhost:5000${user.profilePic}`}
+                    src={`${SOCKET_URL}${user.profilePic}`}   // ✅ FIXED
                     alt="Profile"
                     className="w-full h-full object-cover rounded-full"
                   />

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import API, { SOCKET_URL } from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
 import socket from "../../utils/socket";
 import { formatDistanceToNow } from "date-fns";
-import { Plus, Trash2, Edit2, X, Check } from "lucide-react"; // icons
+import { Plus, Trash2, Edit2, X, Check } from "lucide-react";
 
 export default function CommunityChat() {
   const { user } = useAuth();
@@ -24,7 +24,7 @@ export default function CommunityChat() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/community/chat", {
+        const res = await API.get(`/community/chat`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMessages(res.data);
@@ -89,8 +89,9 @@ export default function CommunityChat() {
       try {
         const formData = new FormData();
         formData.append("image", image);
-        const res = await axios.post(
-          "http://localhost:5000/api/community/chat/upload",
+
+        const res = await API.post(
+          `/community/chat/upload`,
           formData,
           {
             headers: {
@@ -99,6 +100,7 @@ export default function CommunityChat() {
             },
           }
         );
+
         imageUrl = res.data.imageUrl;
       } catch (err) {
         console.error("❌ Image upload failed:", err);
@@ -179,7 +181,7 @@ export default function CommunityChat() {
 
           const profilePic =
             msg?.user?.profilePic
-              ? `http://localhost:5000${msg.user.profilePic}`
+              ? `${SOCKET_URL}${msg.user.profilePic}`
               : "https://via.placeholder.com/40?text=👤";
 
           return (
@@ -260,7 +262,7 @@ export default function CommunityChat() {
                   {msg.imageUrl && (
                     <div className="relative mt-2">
                       <img
-                        src={`http://localhost:5000${msg.imageUrl}`}
+                        src={`${SOCKET_URL}${msg.imageUrl}`}
                         alt="chat-img"
                         className="rounded-xl max-w-[200px] shadow-sm"
                       />

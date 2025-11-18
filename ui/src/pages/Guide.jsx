@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import StepTimer from "../components/Guide/StepTimer";
+import { BASE_URL } from "../utils/api";
+
 
 const Guide = () => {
   const { id } = useParams();
@@ -37,7 +39,7 @@ const Guide = () => {
   useEffect(() => {
     const fetchGuide = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/meals/${id}`, {
+        const res = await axios.get(`${BASE_URL}/meals/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -74,7 +76,7 @@ const Guide = () => {
       try {
         setTranslating(true);
         const res = await axios.post(
-          "http://localhost:5000/api/translate/translate",
+          `${BASE_URL}/translate/translate`,
           {
             text: current.en,
             target: language,
@@ -106,7 +108,7 @@ const Guide = () => {
       try {
         setLoadingTip(true);
         const res = await axios.post(
-          "http://localhost:5000/api/translate/tip",
+          `${BASE_URL}/translate/tip`,
           {
             text: stepText,
             language,
@@ -138,7 +140,7 @@ const Guide = () => {
 
       try {
         const res = await axios.post(
-          "http://localhost:5000/api/timer/analyze-step",
+          `${BASE_URL}/timer/analyze-step`,
           { stepText, language },
           {
             headers: {

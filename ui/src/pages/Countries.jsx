@@ -6,6 +6,7 @@ import CountrySelector from "../components/Countries/CountrySelector";
 import CategorySelector from "../components/Countries/CategorySelector";
 import DishList from "../components/Countries/DishList";
 import axios from "axios";
+import { BASE_URL } from "../utils/api";   // ✅ ADDED
 
 const Countries = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -45,10 +46,10 @@ const Countries = () => {
 
         if (!selectedCountry) {
           // 🌍 No country selected → Get Random Dishes
-          url = `http://localhost:5000/api/countries/random`;
+          url = `${BASE_URL}/countries/random`;   // ✅ FIXED
         } else {
           // 🎯 Fetch by Country + Category
-          url = `http://localhost:5000/api/countries/dishes?country=${selectedCountry}&category=${selectedCategory}`;
+          url = `${BASE_URL}/countries/dishes?country=${selectedCountry}&category=${selectedCategory}`;  // ✅ FIXED
         }
 
         const res = await axios.get(url, { headers });

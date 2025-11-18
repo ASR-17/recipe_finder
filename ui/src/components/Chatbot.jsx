@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import API from "../../utils/api";   // ✅ use global API
 import {
   FaMicrophone,
   FaMicrophoneSlash,
@@ -21,7 +21,7 @@ const Chatbot = ({ onClose }) => {
 
   const recognitionRef = useRef(null);
 
-  // ✅ Voice Recognition Setup
+  // 🎤 Voice Recognition Setup
   useEffect(() => {
     if (!SpeechRecognition) return;
 
@@ -52,7 +52,6 @@ const Chatbot = ({ onClose }) => {
     recognitionRef.current = recognition;
   }, []);
 
-  // ✅ Toggle Mic
   const toggleMic = () => {
     if (!recognitionRef.current) {
       alert("Speech Recognition not supported in this browser.");
@@ -70,7 +69,6 @@ const Chatbot = ({ onClose }) => {
     }
   };
 
-  // ✅ Speak Response (ONLY if user used voice)
   const speakText = (text) => {
     if (muted || !isVoiceInput) return;
 
@@ -82,7 +80,7 @@ const Chatbot = ({ onClose }) => {
     window.speechSynthesis.speak(utter);
   };
 
-  // ✅ Send Message
+  // 💬 Send Message (fixed)
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -96,11 +94,10 @@ const Chatbot = ({ onClose }) => {
     setIsVoiceInput(false);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/ai/chat",
-        { message: userMsg.message },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
+      // ✅ FIXED: removed localhost → using API util
+      const res = await API.post("/ai/chat", {
+        message: userMsg.message,
+      });
 
       const reply = res.data.reply || "I didn't catch that.";
 
@@ -108,14 +105,15 @@ const Chatbot = ({ onClose }) => {
 
       if (voiceMode) speakText(reply);
     } catch {
-      setMessages((prev) => [...prev, { sender: "bot", message: "Server error, try again." }]);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", message: "Server error, try again." },
+      ]);
     }
   };
 
   return (
     <div className="fixed bottom-6 right-6 w-[22rem] h-[28rem] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200">
-
-      {/* HEADER */}
       <div className="bg-purple-600 text-white px-4 py-2 font-bold flex justify-between items-center relative">
         <span className="flex items-center gap-2">
           <FaRobot /> ChefBot
@@ -135,7 +133,6 @@ const Chatbot = ({ onClose }) => {
         </button>
       </div>
 
-      {/* MESSAGES */}
       <div className="flex-grow p-3 overflow-y-auto space-y-2 text-sm">
         {messages.map((msg, i) => (
           <div
@@ -151,7 +148,6 @@ const Chatbot = ({ onClose }) => {
         ))}
       </div>
 
-      {/* INPUT AREA */}
       <div className="p-2 border-t border-gray-200 flex items-center gap-2">
         <button
           onClick={toggleMic}
@@ -167,7 +163,10 @@ const Chatbot = ({ onClose }) => {
           className="flex-grow px-3 py-2 rounded-lg bg-gray-100 text-gray-900"
           placeholder="Type or Speak..."
           value={input}
-          onChange={(e) => { setInput(e.target.value); setIsVoiceInput(false); }}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setIsVoiceInput(false);
+          }}
         />
 
         <button onClick={sendMessage} className="px-4 py-2 bg-purple-600 text-white rounded-lg">
