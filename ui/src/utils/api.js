@@ -1,11 +1,15 @@
 import axios from "axios";
 
-// MUST use env ONLY (no fallback to localhost)
+// MUST use env ONLY (Netlify friendly)
+export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+// Axios instance
 const API = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
+  baseURL: `${BASE_URL}/api`,
   withCredentials: true,
 });
 
+// Add token if available
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -14,7 +18,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Socket URL also MUST use env ONLY
-export const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
+// Socket URL (same backend)
+export const SOCKET_URL = BASE_URL;
 
 export default API;
