@@ -47,7 +47,7 @@ const Details = () => {
       try {
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const res = await axios.get(`${BASE_URL}/meals/${id}`, { headers });
+        const res = await axios.get(`${BASE_URL}/api/meals/${id}`, { headers });
         setDish(res.data);
         setError(null);
       } catch (err) {
@@ -77,14 +77,14 @@ const Details = () => {
     try {
       if (isLikedNow) {
         // UNLIKE
-        await axios.delete(`${BASE_URL}/likes/like/${mealId}`, {
+        await axios.delete(`${BASE_URL}/api/likes/like/${mealId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser({ ...user, likedRecipes: likedList.filter((x) => x !== mealId) });
       } else {
         // LIKE
         await axios.post(
-          `${BASE_URL}/likes/like/${mealId}`,
+          `${BASE_URL}/api/likes/like/${mealId}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -125,7 +125,7 @@ const Details = () => {
       }
 
       await axios.post(
-        `${BASE_URL}/ratings`,
+        `${BASE_URL}/api/ratings`,
         { mealId: id, rating: value },
         { headers: { Authorization: `Bearer ${token}` } }
       );
