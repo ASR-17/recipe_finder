@@ -19,6 +19,6 @@ API.interceptors.request.use((config) => {
 });
 
 // Socket URL (same backend)
-export const SOCKET_URL = BASE_URL;
+export const SOCKET_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default API;
