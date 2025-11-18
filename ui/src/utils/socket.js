@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { SOCKET_URL } from "./utils/api"; // adjust path if needed
+import { SOCKET_URL } from "./api"; // adjust path if needed
 
 const token = localStorage.getItem("token");
 
