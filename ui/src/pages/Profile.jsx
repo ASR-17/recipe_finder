@@ -15,17 +15,11 @@ export default function Profile() {
   const [uploading, setUploading] = useState(false); // 🆕
 
   useEffect(() => {
-  if (activeTab !== "liked") return;  // run only when Liked tab opens
+  if (activeTab !== "liked") return;
 
   const fetchLikedRecipes = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const res = await axios.get(`${BASE_URL}/liked`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
+      const res = await API.get(`/likes/liked`); 
       setLikedMeals(res.data);
     } catch (error) {
       console.error("Failed to load liked recipes:", error);
@@ -34,6 +28,7 @@ export default function Profile() {
 
   fetchLikedRecipes();
 }, [activeTab]);
+
 
   // 🆕 handle file change + upload
   const handleProfilePicChange = async (e) => {

@@ -64,56 +64,50 @@ const Details = () => {
     fetchDish();
   }, [id]);
 
-  // like/unlike toggle
   const toggleLike = async () => {
-    if (!user) return alert("⚠ Login required to like recipes.");
-    if (!dish?.idMeal) return;
+  if (!user) return alert("⚠ Login required to like recipes.");
+  if (!dish?.idMeal) return;
 
-    const mealId = dish.idMeal; // IMPORTANT: external idMeal (string)
-    const token = localStorage.getItem("token");
-    const likedList = user.likedRecipes || [];
-    const isLikedNow = likedList.includes(mealId);
+  const mealId = dish.idMeal;
+  const likedList = user.likedRecipes || [];
+  const isLikedNow = likedList.includes(mealId);
 
-    try {
-      if (isLikedNow) {
-        // UNLIKE
-        await axios.delete(`${BASE_URL}/api/like/${mealId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUser({ ...user, likedRecipes: likedList.filter((x) => x !== mealId) });
-      } else {
-        // LIKE
-        await axios.post(
-          `${BASE_URL}/api/like/${mealId}`,
-          {},
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+  try {
+    if (isLikedNow) {
+      // UNLIKE
+      await API.delete(`/likes/like/${mealId}`);
+      setUser({ ...user, likedRecipes: likedList.filter((x) => x !== mealId) });
 
-        setUser({ ...user, likedRecipes: [...likedList, mealId] });
+    } else {
+      // LIKE
+      await API.post(`/likes/like/${mealId}`);
+      setUser({ ...user, likedRecipes: [...likedList, mealId] });
 
-        // confetti
-        confetti({
-          particleCount: 45,
-          spread: 65,
-          origin: { x: 0.95, y: 0.15 },
-          startVelocity: 40,
-        });
+      // 🎉 confetti
+      confetti({
+        particleCount: 45,
+        spread: 65,
+        origin: { x: 0.95, y: 0.15 },
+        startVelocity: 40,
+      });
 
-        // sparkle pulse on icon
-        const heart = document.getElementById("likeHeart");
-        if (heart) {
-          heart.classList.add("sparkle");
-          setTimeout(() => heart.classList.remove("sparkle"), 600);
-        }
-
-        // toast
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 1500);
+      // ✨ sparkle effect
+      const heart = document.getElementById("likeHeart");
+      if (heart) {
+        heart.classList.add("sparkle");
+        setTimeout(() => heart.classList.remove("sparkle"), 600);
       }
-    } catch (err) {
-      console.log(err);
+
+      // 🔔 toast
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 1500);
     }
-  };
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
   // rating submit
   const handleRatingSubmit = async (value) => {
