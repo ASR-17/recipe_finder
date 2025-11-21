@@ -15,23 +15,25 @@ export default function Profile() {
   const [uploading, setUploading] = useState(false); // 🆕
 
   useEffect(() => {
-    const fetchLikedRecipes = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
+  if (activeTab !== "liked") return;  // run only when Liked tab opens
 
-        const res = await axios.get(`${BASE_URL}/likes/liked`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+  const fetchLikedRecipes = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
-        setLikedMeals(res.data);
-      } catch (error) {
-        console.error("Failed to load liked recipes:", error);
-      }
-    };
+      const res = await axios.get(`${BASE_URL}/liked`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    fetchLikedRecipes();
-  }, [user?.likedRecipes]);
+      setLikedMeals(res.data);
+    } catch (error) {
+      console.error("Failed to load liked recipes:", error);
+    }
+  };
+
+  fetchLikedRecipes();
+}, [activeTab]);
 
   // 🆕 handle file change + upload
   const handleProfilePicChange = async (e) => {

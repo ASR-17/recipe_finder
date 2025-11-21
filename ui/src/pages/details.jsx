@@ -77,14 +77,14 @@ const Details = () => {
     try {
       if (isLikedNow) {
         // UNLIKE
-        await axios.delete(`${BASE_URL}/api/likes/like/${mealId}`, {
+        await axios.delete(`${BASE_URL}/api/like/${mealId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser({ ...user, likedRecipes: likedList.filter((x) => x !== mealId) });
       } else {
         // LIKE
         await axios.post(
-          `${BASE_URL}/api/likes/like/${mealId}`,
+          `${BASE_URL}/api/like/${mealId}`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
