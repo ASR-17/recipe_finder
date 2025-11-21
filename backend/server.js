@@ -46,10 +46,12 @@ app.use(express.json());
 // ✅ CORS
 // ✅ CORS
 const allowedOrigins = [
-  process.env.FRONTEND_URL, // <-- your deployed Vercel frontend
-  "http://localhost:5173",  // <-- for local dev
-  "http://localhost:5174",  // <-- optional (if you used another port)
+  "https://recipefinderapp01.vercel.app",   // your Vercel frontend
+  process.env.FRONTEND_URL,                 // backup
+  "http://localhost:5173",
+  "http://localhost:5174",
 ];
+
 
 app.use(
   cors({
