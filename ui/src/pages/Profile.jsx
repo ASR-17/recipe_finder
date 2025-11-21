@@ -4,6 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Pencil } from "lucide-react"; // 🆕 for edit icon
 import { BASE_URL } from "../utils/api";
+import API from "../utils/api";
+
 
 
 export default function Profile() {
