@@ -1,8 +1,7 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": "dist",
-  "rootDirectory": "ui",
+  "buildCommand": "cd ui && npm install && npm run build",
+  "installCommand": "cd ui && npm install",
+  "outputDirectory": "ui/dist",
   "framework": "vite",
   "env": {
     "NODE_VERSION": "18"
