@@ -124,7 +124,6 @@ const IngredientsPage = () => {
                 "desserts",
                 "Find meals by ingredients",
                 "restaurants",
-                "team",
                 "about",
               ].map((item) => {
                 let label, path;
@@ -140,10 +139,6 @@ const IngredientsPage = () => {
                   case "restaurants":
                     label = "Cuisine Explorer";
                     path = "/countries";
-                    break;
-                  case "team":
-                    label = "Team";
-                    path = "/team";
                     break;
                   case "about":
                     label = "About Us";

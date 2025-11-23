@@ -13,12 +13,12 @@ import IngredientsPage from "./pages/IngredientsPage";
 import Chatbot from "./components/Chatbot";
 import Profile from "./pages/Profile";
 import Community from "./pages/Community";
+import AboutUs from "./pages/AboutUs";   // <-- ADDED
 
 function AppContent() {
   const location = useLocation();
   const [showChat, setShowChat] = useState(false);
 
-  // ✅ Hide chatbot on landing page
   const hideChat = location.pathname === "/";
 
   return (
@@ -46,9 +46,8 @@ function AppContent() {
           }
         />
 
-
         <Route
-        path="/profile"
+          path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
@@ -91,9 +90,19 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+
+        {/* ⭐ NEW ABOUT PAGE ROUTE */}
+        <Route
+          path="/about"
+          element={
+            <ProtectedRoute>
+              <AboutUs />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
 
-      {/* ✅ Chatbot FAB (floating button) — hidden on landing page */}
       {!hideChat && (
         <button
           onClick={() => setShowChat(true)}
@@ -103,7 +112,6 @@ function AppContent() {
         </button>
       )}
 
-      {/* ✅ Chatbot Window */}
       {showChat && <Chatbot onClose={() => setShowChat(false)} />}
     </>
   );
