@@ -13,7 +13,7 @@ import IngredientsPage from "./pages/IngredientsPage";
 import Chatbot from "./components/Chatbot";
 import Profile from "./pages/Profile";
 import Community from "./pages/Community";
-import AboutUs from "./pages/AboutUs";   // <-- ADDED
+import AboutUs from "./pages/AboutUs.jsx";   // <-- ADDED
 
 function AppContent() {
   const location = useLocation();
