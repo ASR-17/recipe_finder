@@ -1,7 +1,0 @@
-{
-  "rootDirectory": "ui",
-  "framework": "vite",
-  "env": {
-    "NODE_VERSION": "18"
-  }
-}
