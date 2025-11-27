@@ -7,7 +7,7 @@ const About = () => {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] flex items-center justify-center overflow-hidden bg-black">
         <img
-          src="/your-hero-image.jpg"
+          src=""
           alt="Food banner"
           className="absolute w-full h-full object-cover opacity-60"
         />
