@@ -6,7 +6,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Search, Bot, Star, MapPin } from "lucide-react";
 import API from "../utils/api";
-// import { BASE_URL } from "../utils/api";
+import { BASE_URL } from "../utils/api";
 
 
 const Card = () => {
